@@ -5,7 +5,7 @@ from typing import Optional, Union
 import numpy as np
 
 import CIR_proc
-import OU_proc
+import StochasticCalculus.SC.OU_proc as OU_procticCalculus.SC.OU_proc as OU_proc
 
 # =============================================================================
 # mu, OU drift process
