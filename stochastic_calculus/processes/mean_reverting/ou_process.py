@@ -108,18 +108,40 @@ class OrnsteinUhlenbeckProcess(StochasticProcess):
 
         return OUResult(paths)
 
+    def simulate_with_initial_value(
+        self, n_steps: int, dt: float = 1.0, X_0: Optional[Union[float, np.ndarray]] = None, random_state: Optional[int] = None
+    ) -> OUResult:
+        """
+        Simulate OU process with specific initial value.
+
+        Args:
+            n_steps: Number of time steps
+            dt: Time increment
+            X_0: Initial value(s)
+            random_state: Random seed
+
+        Returns:
+            OUResult with simulated paths
+        """
+        return self.simulate_with_initial_values(
+            n_steps=n_steps,
+            initial_values={"X_0": X_0},
+            dt=dt,
+            random_state=random_state
+        )
+
     def get_initial_value_names(self) -> list[str]:
         """Return names of initial value parameters for OU process."""
-        return [StandardInitialValueNames.PROCESS_VALUE]
+        return ["X_0"]
 
     def set_initial_values(self, **kwargs) -> None:
         """Set initial values on the OU process."""
-        if StandardInitialValueNames.PROCESS_VALUE in kwargs:
-            self.X_0 = kwargs[StandardInitialValueNames.PROCESS_VALUE]
+        if "X_0" in kwargs:
+            self.X_0 = kwargs["X_0"]
 
     def get_initial_values(self) -> dict[str, Any]:
         """Get current initial values."""
-        return {StandardInitialValueNames.PROCESS_VALUE: self.X_0}
+        return {"X_0": self.X_0}
 
     def _get_params_for_process(self, i: int) -> OUParameters:
         """Get parameters for process i."""

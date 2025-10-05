@@ -50,8 +50,8 @@ def demo_jump_diffusion_processes():
     )
 
     # Simulate single path
-    result_single = merton_single.simulate_with_initial_value(
-        n_steps=1000, dt=1 / 252, S_0=100.0, random_state=RANDOM_STATE
+    result_single = merton_single.simulate_with_initial_values(
+        n_steps=1000, dt=1 / 252, initial_values={'S_0':100.0}, random_state=RANDOM_STATE
     )
 
     time_years = np.arange(result_single.prices.shape[0]) / 252
@@ -67,16 +67,6 @@ def demo_jump_diffusion_processes():
         figsize=(12, 6),
     )
 
-    # Generic path visualization for log prices (shows jumps clearly)
-    plotter.plot_paths(
-        data=result_single.log_prices,
-        title="Single Merton Jump Diffusion - Log Price Path",
-        xlabel="Time (years)",
-        ylabel="Log Price",
-        time_axis=time_years,
-        process_labels=["Log Price"],
-        figsize=(12, 6),
-    )
 
     # Statistical analysis using generic tools
     stat_plotter.plot_distribution_analysis(
@@ -108,8 +98,8 @@ def demo_jump_diffusion_processes():
             jump_mean=-0.02,
             jump_volatility=0.15,
         )
-        result = merton_param.simulate_with_initial_value(
-            n_steps=1000, dt=1 / 252, S_0=100.0, random_state=RANDOM_STATE
+        result = merton_param.simulate_with_initial_values(
+            n_steps=1000, dt=1 / 252, initial_values={'S_0':100.0}, random_state=RANDOM_STATE
         )
         intensity_results.append(result.prices[:, 0])
         intensity_labels.append(f"λ = {intensity}")
@@ -140,8 +130,8 @@ def demo_jump_diffusion_processes():
             jump_mean=-0.02,
             jump_volatility=vol,
         )
-        result = merton_vol.simulate_with_initial_value(
-            n_steps=1000, dt=1 / 252, S_0=100.0, random_state=RANDOM_STATE
+        result = merton_vol.simulate_with_initial_values(
+            n_steps=1000, dt=1 / 252, initial_values={'S_0':100.0}, random_state=RANDOM_STATE
         )
         vol_results.append(result.prices[:, 0])
         vol_labels.append(f"σ_J = {vol}")
@@ -171,8 +161,8 @@ def demo_jump_diffusion_processes():
     kou_paths = []
 
     for i in range(n_paths):
-        merton_result = merton_comp.simulate_with_initial_value(
-            n_steps=1000, dt=1 / 252, S_0=100.0, random_state=RANDOM_STATE + i
+        merton_result = merton_comp.simulate_with_initial_values(
+            n_steps=1000, dt=1 / 252, initial_values={'S_0':100.0}, random_state=RANDOM_STATE + i
         )
         kou_result = kou_comp.simulate(
             n_steps=1000, dt=1 / 252, S_0=100.0, random_state=RANDOM_STATE + i
@@ -307,8 +297,8 @@ def demo_jump_diffusion_processes():
     bates_finals = []
 
     for i in range(n_corr_paths):
-        m_res = merton_corr.simulate_with_initial_value(
-            n_steps=252, dt=1 / 252, S_0=100.0, random_state=RANDOM_STATE + i * 10
+        m_res = merton_corr.simulate(
+            n_steps=252, dt=1 / 252, S={'S_0':100.0}, random_state=RANDOM_STATE + i * 10
         )
         k_res = kou_corr.simulate(
             n_steps=252, dt=1 / 252, S_0=100.0, random_state=RANDOM_STATE + i * 10

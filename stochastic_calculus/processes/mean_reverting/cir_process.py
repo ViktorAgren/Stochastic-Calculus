@@ -158,6 +158,23 @@ class CIRProcess:
             "correlation": self.correlation,
         }
 
+    def simulate_with_initial_value(
+        self, n_steps: int, dt: float = 1.0, sigma_0: Optional[Union[float, np.ndarray]] = None, random_state: Optional[int] = None
+    ) -> CIRResult:
+        """
+        Simulate CIR process with specific initial value.
+
+        Args:
+            n_steps: Number of time steps
+            dt: Time increment
+            sigma_0: Initial value(s)
+            random_state: Random seed
+
+        Returns:
+            CIRResult with simulated paths
+        """
+        return self.simulate(n_steps=n_steps, dt=dt, sigma_0=sigma_0, random_state=random_state)
+
 
 def estimate_cir_parameters(data: np.ndarray, dt: float = 1.0) -> CIRParameters:
     """
